@@ -2,7 +2,8 @@ pipeline {
     agent any
 
     environment {
-        KUBE_CONFIG = credentials('your-kube-config-credential-id')
+        KUBE_CONFIG = credentials('id')
+        APP_NAME = 'legal-api'
         HELM_CHART_PATH = '.helm/'
         PYTHON_VERSION = '3.11'
         POETRY_VERSION = '1.6.1'
@@ -10,6 +11,7 @@ pipeline {
         AWS_DEFAULT_REGION = 'your-aws-region'
         DOCKER_IMAGE_NAME = 'legalterm'
         DOCKERFILE_PATH = './legal-term/Dockerfile'
+        ecr-credentials-id = credentials('id')
     }
 
     stages {
@@ -59,7 +61,7 @@ pipeline {
             steps {
                 script {
                     // Login to ECR
-                    withCredentials([string(credentialsId: 'your-ecr-credentials-id', variable: 'AWS_ECR_CREDENTIALS')]) {
+                    withCredentials([string(credentialsId: ${ecr-credentials-id}, variable: 'AWS_ECR_CREDENTIALS')]) {
                         sh """
                             aws ecr get-login-password --region ${AWS_DEFAULT_REGION} | docker login --username AWS --password-stdin ${ECR_REGISTRY}
                         """
@@ -89,7 +91,7 @@ pipeline {
 
                     // Deploy Helm chart
                     sh """
-                        helm upgrade --install ${env.ARGOCD_APP_NAME} ${env.HELM_CHART_PATH} --namespace your-namespace
+                        helm upgrade --install ${APP_NAME} ${env.HELM_CHART_PATH} --namespace your-namespace
                     """
                 }
             }

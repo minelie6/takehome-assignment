@@ -2,14 +2,14 @@
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: {{ include "nebius-chart.fullname" . }}
+  name: {{ include "legal-api.fullname" . }}
   labels:
-    {{- include "nebius-chart.labels" . | nindent 4 }}
+    {{- include "legal-api.labels" . | nindent 4 }}
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: {{ include "nebius-chart.fullname" . }}
+    name: {{ include "legal-api.fullname" . }}
   minReplicas: {{ .Values.autoscaling.minReplicas }}
   maxReplicas: {{ .Values.autoscaling.maxReplicas }}
   metrics:
