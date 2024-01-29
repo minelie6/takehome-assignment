@@ -21,5 +21,5 @@ EXPOSE 5000
 # Define environment variable
 ENV FLASK_APP=./src/api.py
 
-# Run app.py when the container launches
+# Run api.py when the container launches
 CMD ["poetry", "run", "flask", "run", "--host=0.0.0.0"]
