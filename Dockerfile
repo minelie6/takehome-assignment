@@ -1,4 +1,4 @@
-# Use an official Python runtime as a parent image
+# Defining the parent image
 FROM python:3.11-slim
 
 # Set the working directory to /app
@@ -19,7 +19,7 @@ COPY . /app
 EXPOSE 5000
 
 # Define environment variable
-ENV FLASK_APP=./src/app.py
+ENV FLASK_APP=./src/api.py
 
 # Run app.py when the container launches
 CMD ["poetry", "run", "flask", "run", "--host=0.0.0.0"]
